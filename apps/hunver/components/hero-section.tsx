@@ -95,12 +95,12 @@ const defaultSlides: HeroSlide[] = [
     backgroundImage: { src: "/images/slider-2-bg.jpg", alt: "Antik tiyatro ve katılımcılar" },
   },
   {
-    subtitle: "Dönüşüm Başlıyor",
-    title: "Yeni Bir Sen",
-    description: "Nefes çalışmaları, meditasyon ve bilinçli hareket ile hayatını kökten değiştir.",
-    ctaText: "Başvur",
+    subtitle: "Hayatın Rotası",
+    title: "Sistemini Yeniden Kur",
+    description: "Yoğun dünyanda durarak, nefes ve öz-farkındalık deneyimi ile yeniden dönüşümünü başlat.",
+    ctaText: "Ücretsiz Deneyimini Başlat",
     ctaHref: "/basvuru",
-    personImage: { src: "/images/hunver-man.png", alt: "Haydar Ünver" },
+    backgroundImage: { src: "/images/slider-3-bg.jpg", alt: "Meditasyon ve gün batımı" },
   },
 ]
 
@@ -194,36 +194,38 @@ function BackgroundSlide({ slide, index }: { slide: HeroSlide; index: number }) 
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D]/80 via-[#0D0D0D]/20 to-[#0D0D0D]/50" />
       </div>
 
-      {/* Centered content */}
-      <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-4 pt-20 text-center md:px-6 md:pt-24 lg:pt-28">
-        <p
-          key={`subtitle-${index}`}
-          className="mb-3 font-serif text-sm italic tracking-wide text-[#C8A96A] md:mb-4 md:text-base lg:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500"
-        >
-          {slide.subtitle}
-        </p>
-        <h1
-          key={`title-${index}`}
-          className="mb-4 max-w-2xl text-2xl font-bold leading-[1.1] tracking-tight text-white sm:text-3xl md:mb-5 md:text-4xl lg:text-5xl animate-in fade-in slide-in-from-bottom-6 duration-500 delay-100"
-        >
-          {slide.title}
-        </h1>
-        <p
-          key={`desc-${index}`}
-          className="mb-6 max-w-lg text-sm leading-relaxed text-white/70 md:mb-8 md:text-base lg:text-lg animate-in fade-in slide-in-from-bottom-6 duration-500 delay-200"
-        >
-          {slide.description}
-        </p>
-        <div key={`cta-${index}`} className="animate-in fade-in slide-in-from-bottom-6 duration-500 delay-300">
-          <Button
-            asChild
-            className="group h-10 gap-2 rounded-lg border border-[#C8A96A]/30 bg-[#C8A96A] px-5 text-sm font-semibold text-[#0D0D0D] transition-all hover:bg-[#d4b87a] hover:shadow-lg hover:shadow-[#C8A96A]/20 md:h-11 md:px-6"
+      {/* Content - left aligned like slide 1 */}
+      <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-4 pt-20 md:px-6 md:pt-24 lg:pt-28">
+        <div className="max-w-lg">
+          <p
+            key={`subtitle-${index}`}
+            className="mb-3 font-serif text-sm italic tracking-wide text-[#C8A96A] md:mb-4 md:text-base lg:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500"
           >
-            <Link href={slide.ctaHref}>
-              {slide.ctaText}
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </Button>
+            {slide.subtitle}
+          </p>
+          <h1
+            key={`title-${index}`}
+            className="mb-4 text-2xl font-bold leading-[1.1] tracking-tight text-white sm:text-3xl md:mb-5 md:text-4xl lg:text-5xl animate-in fade-in slide-in-from-bottom-6 duration-500 delay-100"
+          >
+            {slide.title}
+          </h1>
+          <p
+            key={`desc-${index}`}
+            className="mb-6 max-w-md text-sm leading-relaxed text-white/70 md:mb-8 md:text-base lg:text-lg animate-in fade-in slide-in-from-bottom-6 duration-500 delay-200"
+          >
+            {slide.description}
+          </p>
+          <div key={`cta-${index}`} className="animate-in fade-in slide-in-from-bottom-6 duration-500 delay-300">
+            <Button
+              asChild
+              className="group h-10 gap-2 rounded-lg border border-[#C8A96A]/30 bg-[#C8A96A] px-5 text-sm font-semibold text-[#0D0D0D] transition-all hover:bg-[#d4b87a] hover:shadow-lg hover:shadow-[#C8A96A]/20 md:h-11 md:px-6"
+            >
+              <Link href={slide.ctaHref}>
+                {slide.ctaText}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </>
