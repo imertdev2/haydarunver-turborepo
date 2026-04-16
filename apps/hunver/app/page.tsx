@@ -3,6 +3,7 @@ import { AboutSection } from "@/components/about-section"
 import { TrainingsSection } from "@/components/trainings-section"
 import { EventsSection } from "@/components/events-section"
 import { GallerySection } from "@/components/gallery-section"
+import { TestimonialsSection } from "@/components/testimonials-section"
 import { BlogSection } from "@/components/blog-section"
 import { Footer } from "@/components/footer"
 
@@ -14,6 +15,7 @@ export default function Page() {
       <TrainingsSection />
       <EventsSection />
       <GallerySection />
+      <TestimonialsSection />
       <BlogSection />
       <Footer />
     </main>
