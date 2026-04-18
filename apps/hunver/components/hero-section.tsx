@@ -85,6 +85,7 @@ const defaultSlides: HeroSlide[] = [
     ctaText: "Hemen Başla",
     ctaHref: "/basvuru",
     personImage: { src: "/images/hunver-man.png", alt: "Haydar Ünver" },
+    backgroundImage: { src: "/images/slider-1.png", alt: "Slider arka plan" },
   },
   {
     subtitle: "Dair Yüce Gönül",
@@ -92,7 +93,7 @@ const defaultSlides: HeroSlide[] = [
     description: "Acı bir dönüşüm değildir, içindeki en derin bilgeliğe ulaşmanın kapısıdır.",
     ctaText: "Bu Sırları Keşfet",
     ctaHref: "/kesfet",
-    backgroundImage: { src: "/images/slider-2-bg.jpg", alt: "Antik tiyatro ve katılımcılar" },
+    backgroundImage: { src: "/images/slider-2.png", alt: "Antik tiyatro ve katılımcılar" },
   },
   {
     subtitle: "Hayatın Rotası",
@@ -100,7 +101,7 @@ const defaultSlides: HeroSlide[] = [
     description: "Yoğun dünyanda durarak, nefes ve öz-farkındalık deneyimi ile yeniden dönüşümünü başlat.",
     ctaText: "Ücretsiz Deneyimini Başlat",
     ctaHref: "/basvuru",
-    backgroundImage: { src: "/images/slider-3-bg.jpg", alt: "Meditasyon ve gün batımı" },
+    backgroundImage: { src: "/images/slider-3.png", alt: "Meditasyon ve gün batımı" },
   },
 ]
 
@@ -108,12 +109,26 @@ const defaultSlides: HeroSlide[] = [
 function PersonSlide({ slide, index }: { slide: HeroSlide; index: number }) {
   return (
     <>
-      {/* Background gradient layers */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0D0D0D] via-[#0D0D0D] to-[#112222]" />
-        <div className="absolute -top-1/4 -right-1/4 h-[800px] w-[800px] rounded-full bg-[#258989] opacity-[0.07] blur-[120px]" />
-        <div className="absolute -bottom-1/4 -left-1/4 h-[600px] w-[600px] rounded-full bg-[#258989] opacity-[0.05] blur-[100px]" />
-      </div>
+      {/* Background */}
+      {slide.backgroundImage ? (
+        <div className="pointer-events-none absolute inset-0">
+          <Image
+            src={slide.backgroundImage.src}
+            alt={slide.backgroundImage.alt}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-[#0D0D0D]/50" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0D0D0D]/80 via-[#0D0D0D]/40 to-transparent" />
+        </div>
+      ) : (
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0D0D0D] via-[#0D0D0D] to-[#112222]" />
+          <div className="absolute -top-1/4 -right-1/4 h-[800px] w-[800px] rounded-full bg-[#258989] opacity-[0.07] blur-[120px]" />
+          <div className="absolute -bottom-1/4 -left-1/4 h-[600px] w-[600px] rounded-full bg-[#258989] opacity-[0.05] blur-[100px]" />
+        </div>
+      )}
 
       {/* Mandala */}
       <div className="pointer-events-none absolute -top-16 right-0 md:-top-10 md:right-[5%]">

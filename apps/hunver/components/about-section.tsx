@@ -22,7 +22,7 @@ export function AboutSection({
   ],
   ctaText = "Hayatın Bilgeliğini Yap",
   ctaHref = "/hakkimda",
-  image = { src: "/images/about-hunver.jpg", alt: "Haydar Ünver" },
+  image = { src: "/images/hakkimda.png", alt: "Haydar Ünver" },
 }: AboutSectionProps) {
   return (
     <section className="relative bg-[#0D0D0D]">

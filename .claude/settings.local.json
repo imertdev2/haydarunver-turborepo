@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx turbo *)"
+      "Bash(npx turbo *)",
+      "Bash(npx sharp-cli *)",
+      "Bash(node -e \"require\\('sharp'\\)\")",
+      "Bash(node convert-heic.mjs)",
+      "Bash(pnpm add *)",
+      "WebFetch(domain:www.youtube.com)"
     ]
   }
 }

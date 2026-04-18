@@ -13,10 +13,10 @@ interface TrainingsSectionProps {
 }
 
 const defaultTrainings: Training[] = [
-  { title: "Nefes Terapisi", image: { src: "/images/training-nefes.jpg", alt: "Nefes Terapisi" } },
-  { title: "Bioenerji", image: { src: "/images/training-bioenerji.jpg", alt: "Bioenerji" } },
-  { title: "Aile Dizilimi", image: { src: "/images/training-aile.jpg", alt: "Aile Dizilimi" } },
-  { title: "Ses Meditasyonu", image: { src: "/images/training-ses.jpg", alt: "Ses Meditasyonu" } },
+  { title: "Nefes Terapisi", image: { src: "/images/nefes-terapisi.png", alt: "Nefes Terapisi" } },
+  { title: "Bioenerji", image: { src: "/images/bio-enerji.png", alt: "Bioenerji" } },
+  { title: "Aile Dizilimi", image: { src: "/images/aile-dizilimi.png", alt: "Aile Dizilimi" } },
+  { title: "Ses Meditasyonu", image: { src: "/images/ses-meditasyonu.png", alt: "Ses Meditasyonu" } },
 ]
 
 export function TrainingsSection({
