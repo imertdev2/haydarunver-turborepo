@@ -9,7 +9,10 @@
       "WebFetch(domain:www.youtube.com)",
       "WebFetch(domain:yt.lemnoslife.com)",
       "WebFetch(domain:www.googleapis.com)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "Bash(node optimize-images.mjs)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
