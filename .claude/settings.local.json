@@ -6,7 +6,10 @@
       "Bash(node -e \"require\\('sharp'\\)\")",
       "Bash(node convert-heic.mjs)",
       "Bash(pnpm add *)",
-      "WebFetch(domain:www.youtube.com)"
+      "WebFetch(domain:www.youtube.com)",
+      "WebFetch(domain:yt.lemnoslife.com)",
+      "WebFetch(domain:www.googleapis.com)",
+      "Bash(git log *)"
     ]
   }
 }

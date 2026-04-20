@@ -25,7 +25,7 @@ const defaultPosts: BlogPost[] = [
     category: "Nefes",
     date: "12 Nisan 2026",
     href: "/blog/nefes-terapisi",
-    image: { src: "/images/blog-1.jpg", alt: "Nefes Terapisi" },
+    image: { src: "/images/nefes-terapisi.png", alt: "Nefes Terapisi" },
   },
   {
     title: "Bioenerji ile Bedenin Dilini Anlamak",
@@ -33,7 +33,7 @@ const defaultPosts: BlogPost[] = [
     category: "Bioenerji",
     date: "8 Nisan 2026",
     href: "/blog/bioenerji",
-    image: { src: "/images/blog-2.jpg", alt: "Bioenerji" },
+    image: { src: "/images/bio-enerji.png", alt: "Bioenerji" },
   },
   {
     title: "Ses Meditasyonu: İçsel Sessizliğe Yolculuk",
@@ -41,17 +41,9 @@ const defaultPosts: BlogPost[] = [
     category: "Meditasyon",
     date: "3 Nisan 2026",
     href: "/blog/ses-meditasyonu",
-    image: { src: "/images/blog-3.jpg", alt: "Ses Meditasyonu" },
+    image: { src: "/images/ses-meditasyonu.png", alt: "Ses Meditasyonu" },
   },
 ]
-
-function ImagePlaceholder({ label }: { label: string }) {
-  return (
-    <div className="flex h-full w-full items-center justify-center bg-white/[0.04] text-xs text-white/20">
-      {label}
-    </div>
-  )
-}
 
 export function BlogSection({
   subtitle = "Yazılar",

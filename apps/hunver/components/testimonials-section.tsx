@@ -1,88 +1,74 @@
 "use client"
 
-import Image from "next/image"
 import { useState, useCallback, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Star } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 
-interface Testimonial {
-  name: string
-  date: string
-  rating: number
-  text: string
-  avatar: { src: string; alt: string }
+interface YouTubeShort {
+  id: string
+  title: string
+  thumbnail: string
+  publishedAt: string
 }
 
 interface TestimonialsSectionProps {
   subtitle?: string
   title?: string
   description?: string
-  testimonials?: Testimonial[]
-}
-
-const defaultTestimonials: Testimonial[] = [
-  {
-    name: "Elif Yılmaz",
-    date: "14 Mar 2026",
-    rating: 5,
-    text: "Nefes terapisi hayatımı değiştirdi. Yıllardır taşıdığım ağırlıktan kurtuldum, kendimi ilk defa bu kadar hafif hissediyorum.",
-    avatar: { src: "/images/testimonial-1.jpg", alt: "Elif Yılmaz" },
-  },
-  {
-    name: "Emre Kaya",
-    date: "28 Şub 2026",
-    rating: 5,
-    text: "Bioenerji seansından sonra bedenimde inanılmaz bir rahatlama hissettim. Haydar hoca gerçekten işinin ehli.",
-    avatar: { src: "/images/testimonial-2.jpg", alt: "Emre Kaya" },
-  },
-  {
-    name: "Ayşe Demir",
-    date: "10 Şub 2026",
-    rating: 5,
-    text: "Festival deneyimi muhteşemdi. Doğanın içinde, bilinçli insanlarla birlikte olmak bana yeni bir perspektif kazandırdı.",
-    avatar: { src: "/images/testimonial-3.jpg", alt: "Ayşe Demir" },
-  },
-  {
-    name: "Burak Aksoy",
-    date: "22 Oca 2026",
-    rating: 5,
-    text: "Ses meditasyonu ile iç sessizliğimi buldum. Her seanstan sonra zihinsel berraklık artıyor, herkese tavsiye ederim.",
-    avatar: { src: "/images/testimonial-4.jpg", alt: "Burak Aksoy" },
-  },
-]
-
-function AvatarPlaceholder({ name }: { name: string }) {
-  return (
-    <div className="flex h-full w-full items-center justify-center rounded-full bg-[#258989]/20 text-lg font-semibold text-[#258989]">
-      {name.charAt(0)}
-    </div>
-  )
 }
 
 export function TestimonialsSection({
-  subtitle = "Deneyimler",
-  title = "Katılımcılardan",
-  description = "Dönüşüm yolculuğuna katılanların deneyimleri ve geri bildirimleri.",
-  testimonials = defaultTestimonials,
+  subtitle = "Geri Dönüşler",
+  title = "Öğrencilerden",
+  description = "Dönüşüm yolculuğuna katılanların deneyimleri.",
 }: TestimonialsSectionProps) {
+  const [shorts, setShorts] = useState<YouTubeShort[]>([])
   const [current, setCurrent] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [playingId, setPlayingId] = useState<string | null>(null)
 
-  // Show 4 on desktop, 2 on tablet, 1 on mobile — handled by CSS grid, we paginate per 1
+  // Fetch shorts from API
+  useEffect(() => {
+    fetch("/api/youtube-shorts")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.shorts && data.shorts.length > 0) {
+          setShorts(data.shorts)
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  // How many items visible at once
+  const visibleCount = 4
+
   const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % testimonials.length)
-  }, [testimonials.length])
+    if (shorts.length === 0) return
+    setCurrent((c) => (c + 1) % shorts.length)
+  }, [shorts.length])
 
   const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length)
-  }, [testimonials.length])
+    if (shorts.length === 0) return
+    setCurrent((c) => (c - 1 + shorts.length) % shorts.length)
+  }, [shorts.length])
 
+  // Auto-rotate (only when no video is playing)
   useEffect(() => {
+    if (shorts.length === 0 || playingId) return
     const timer = setInterval(next, 5000)
     return () => clearInterval(timer)
-  }, [next])
+  }, [next, shorts.length, playingId])
 
-  // Build visible items (show 4, wrapping around)
-  const visible = Array.from({ length: 4 }, (_, i) => testimonials[(current + i) % testimonials.length]!)
+  const visible =
+    shorts.length > 0
+      ? Array.from(
+          { length: Math.min(visibleCount, shorts.length) },
+          (_, i) => shorts[(current + i) % shorts.length]!
+        )
+      : []
+
+  const youtubeChannelUrl = "https://www.youtube.com/@haydar_unversal/shorts"
 
   return (
     <section className="bg-[#0D0D0D] py-12 md:py-16 lg:py-20">
@@ -100,82 +86,172 @@ export function TestimonialsSection({
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-4">
-          {visible.map((t, i) => (
-            <div
-              key={`${t.name}-${current}-${i}`}
-              className="flex flex-col items-center rounded-xl border border-[#C8A96A]/10 bg-[#141414] p-5 text-center md:p-6 animate-in fade-in duration-500"
-            >
-              {/* Avatar */}
-              <div className="relative mb-4 size-16 overflow-hidden rounded-full md:size-20">
-                <Image
-                  src={t.avatar.src}
-                  alt={t.avatar.alt}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-
-              {/* Stars */}
-              <div className="mb-3 flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, s) => (
-                  <Star
-                    key={s}
-                    className={cn(
-                      "size-3.5 md:size-4",
-                      s < t.rating ? "fill-[#C8A96A] text-[#C8A96A]" : "text-white/20"
-                    )}
-                  />
-                ))}
-              </div>
-
-              {/* Text */}
-              <p className="mb-4 flex-1 text-xs leading-relaxed text-white/60 md:text-sm">
-                &ldquo;{t.text}&rdquo;
-              </p>
-
-              {/* Name & date */}
-              <p className="text-sm font-semibold text-white">{t.name}</p>
-              <p className="mt-1 text-[10px] text-white/30 md:text-xs">{t.date}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation */}
-        <div className="mt-6 flex items-center justify-center gap-2 md:mt-8">
-          <button
-            onClick={prev}
-            aria-label="Önceki"
-            className="flex size-9 items-center justify-center rounded-full border border-[#C8A96A]/20 text-white/50 transition-all hover:border-[#C8A96A]/40 hover:text-[#C8A96A]"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-
-          <div className="flex items-center gap-1.5 px-2">
-            {testimonials.map((_, i) => (
-              <button
+        {/* Loading state */}
+        {loading && (
+          <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div
                 key={i}
-                onClick={() => setCurrent(i)}
-                aria-label={`Yorum ${i + 1}`}
-                className="group flex h-6 items-center"
-              >
-                <div className={cn(
-                  "h-[2px] rounded-full transition-all duration-500",
-                  i === current ? "w-6 bg-[#C8A96A]" : "w-3 bg-white/20 group-hover:bg-white/40"
-                )} />
-              </button>
+                className="aspect-[9/16] animate-pulse rounded-xl bg-white/[0.04]"
+              />
             ))}
           </div>
+        )}
 
-          <button
-            onClick={next}
-            aria-label="Sonraki"
-            className="flex size-9 items-center justify-center rounded-full border border-[#C8A96A]/20 text-white/50 transition-all hover:border-[#C8A96A]/40 hover:text-[#C8A96A]"
-          >
-            <ChevronRight className="size-4" />
-          </button>
-        </div>
+        {/* No shorts / API not configured — show YouTube link */}
+        {!loading && shorts.length === 0 && (
+          <div className="flex flex-col items-center gap-4 py-8">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4 w-full">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <a
+                  key={i}
+                  href={youtubeChannelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative aspect-[9/16] overflow-hidden rounded-xl border border-white/10 bg-[#141414] flex items-center justify-center transition-all hover:border-[#C8A96A]/30"
+                >
+                  <div className="flex flex-col items-center gap-3 text-center px-4">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="size-10 text-red-600 md:size-12"
+                      fill="currentColor"
+                    >
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                    <span className="text-xs font-medium text-white/40 group-hover:text-white/60 md:text-sm">
+                      YouTube&apos;da İzle
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+            <a
+              href={youtubeChannelUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 text-sm font-medium text-[#C8A96A] transition-colors hover:text-[#d4b87a]"
+            >
+              Tüm videoları YouTube&apos;da izle →
+            </a>
+          </div>
+        )}
+
+        {/* Shorts grid */}
+        {!loading && shorts.length > 0 && (
+          <>
+            <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+              {visible.map((short, i) => (
+                <div
+                  key={`${short.id}-${current}-${i}`}
+                  className="group relative aspect-[9/16] overflow-hidden rounded-xl border border-white/10 bg-[#141414] animate-in fade-in duration-500"
+                >
+                  {playingId === short.id ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${short.id}?autoplay=1&loop=1`}
+                      title={short.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  ) : (
+                    <button
+                      onClick={() => setPlayingId(short.id)}
+                      className="relative h-full w-full"
+                    >
+                      {/* Thumbnail */}
+                      <img
+                        src={short.thumbnail}
+                        alt={short.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      {/* Play overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
+                        <div className="flex size-12 items-center justify-center rounded-full bg-white/90 shadow-lg transition-transform group-hover:scale-110 md:size-14">
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="#0D0D0D"
+                            className="ml-1 size-5 md:size-6"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                      {/* Title overlay */}
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 md:p-4">
+                        <p className="line-clamp-2 text-left text-xs font-medium text-white md:text-sm">
+                          {short.title}
+                        </p>
+                      </div>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Navigation */}
+            {shorts.length > visibleCount && (
+              <div className="mt-6 flex items-center justify-center gap-2 md:mt-8">
+                <button
+                  onClick={prev}
+                  aria-label="Önceki"
+                  className="flex size-9 items-center justify-center rounded-full border border-[#C8A96A]/20 text-white/50 transition-all hover:border-[#C8A96A]/40 hover:text-[#C8A96A]"
+                >
+                  <ChevronLeft className="size-4" />
+                </button>
+
+                <div className="flex items-center gap-1.5 px-2">
+                  {shorts.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setCurrent(i)
+                        setPlayingId(null)
+                      }}
+                      aria-label={`Short ${i + 1}`}
+                      className="group flex h-6 items-center"
+                    >
+                      <div
+                        className={cn(
+                          "h-[2px] rounded-full transition-all duration-500",
+                          i === current
+                            ? "w-6 bg-[#C8A96A]"
+                            : "w-3 bg-white/20 group-hover:bg-white/40"
+                        )}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={next}
+                  aria-label="Sonraki"
+                  className="flex size-9 items-center justify-center rounded-full border border-[#C8A96A]/20 text-white/50 transition-all hover:border-[#C8A96A]/40 hover:text-[#C8A96A]"
+                >
+                  <ChevronRight className="size-4" />
+                </button>
+              </div>
+            )}
+
+            {/* YouTube link */}
+            <div className="mt-6 text-center">
+              <a
+                href={youtubeChannelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[#C8A96A] transition-colors hover:text-[#d4b87a]"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="size-4"
+                  fill="currentColor"
+                >
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+                Tümünü YouTube&apos;da İzle
+              </a>
+            </div>
+          </>
+        )}
       </div>
     </section>
   )
