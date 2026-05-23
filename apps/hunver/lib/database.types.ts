@@ -70,6 +70,79 @@ export interface Database {
         Insert: { key: string; value: string }
         Update: { value?: string }
       }
+      blog_categories: {
+        Row: {
+          id: string
+          slug: string
+          label: string
+          description: string
+          sort_order: number
+          created_at: string
+        }
+        Insert: Omit<Database["public"]["Tables"]["blog_categories"]["Row"], "id" | "created_at">
+        Update: Partial<Database["public"]["Tables"]["blog_categories"]["Insert"]>
+      }
+      blog_posts: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          excerpt: string
+          body: string
+          category: string
+          date: string
+          image: string
+          is_published: boolean
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<
+          Database["public"]["Tables"]["blog_posts"]["Row"],
+          "id" | "created_at" | "updated_at"
+        >
+        Update: Partial<Database["public"]["Tables"]["blog_posts"]["Insert"]>
+      }
+      events: {
+        Row: {
+          id: string
+          title: string
+          image_src: string
+          image_alt: string
+          is_featured: boolean
+          is_active: boolean
+          sort_order: number
+          created_at: string
+        }
+        Insert: Omit<Database["public"]["Tables"]["events"]["Row"], "id" | "created_at">
+        Update: Partial<Database["public"]["Tables"]["events"]["Insert"]>
+      }
+      trainings: {
+        Row: {
+          id: string
+          title: string
+          image_src: string
+          image_alt: string
+          is_active: boolean
+          sort_order: number
+          created_at: string
+        }
+        Insert: Omit<Database["public"]["Tables"]["trainings"]["Row"], "id" | "created_at">
+        Update: Partial<Database["public"]["Tables"]["trainings"]["Insert"]>
+      }
+      gallery_images: {
+        Row: {
+          id: string
+          src: string
+          alt: string
+          category: string
+          is_active: boolean
+          sort_order: number
+          created_at: string
+        }
+        Insert: Omit<Database["public"]["Tables"]["gallery_images"]["Row"], "id" | "created_at">
+        Update: Partial<Database["public"]["Tables"]["gallery_images"]["Insert"]>
+      }
       businesses: {
         Row: {
           id: string
@@ -108,6 +181,11 @@ export type Availability = Database["public"]["Tables"]["availability"]["Row"]
 export type Business = Database["public"]["Tables"]["businesses"]["Row"]
 export type SiteSetting = Database["public"]["Tables"]["site_settings"]["Row"]
 export type BlockedDate = Database["public"]["Tables"]["blocked_dates"]["Row"]
+export type BlogCategory = Database["public"]["Tables"]["blog_categories"]["Row"]
+export type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"]
+export type EventItem = Database["public"]["Tables"]["events"]["Row"]
+export type Training = Database["public"]["Tables"]["trainings"]["Row"]
+export type GalleryImage = Database["public"]["Tables"]["gallery_images"]["Row"]
 
 // İşletme rehberi sabit listeleri
 export type BusinessCategory =

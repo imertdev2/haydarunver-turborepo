@@ -34,10 +34,10 @@ const NAV: NavItem[] = [
   { href: "/admin/rehber", label: "İşletme Rehberi", icon: Store },
   { href: "/admin/musaitlik", label: "Müsaitlik", icon: Clock },
   { href: "/admin/hizmetler", label: "Hizmetler", icon: Sparkles },
-  { href: "/admin/blog", label: "Blog", icon: Newspaper, soon: true },
-  { href: "/admin/etkinlikler", label: "Etkinlikler", icon: CalendarHeart, soon: true },
-  { href: "/admin/egitimler", label: "Eğitimler", icon: GraduationCap, soon: true },
-  { href: "/admin/galeri", label: "Galeri", icon: Images, soon: true },
+  { href: "/admin/blog", label: "Blog", icon: Newspaper },
+  { href: "/admin/etkinlikler", label: "Etkinlikler", icon: CalendarHeart },
+  { href: "/admin/egitimler", label: "Eğitimler", icon: GraduationCap },
+  { href: "/admin/galeri", label: "Galeri", icon: Images },
   { href: "/admin/ayarlar", label: "Site Ayarları", icon: Settings },
 ]
 

@@ -3,24 +3,17 @@ import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import {
-  BLOG_CATEGORIES,
-  getCategory,
-  getCategoryLabel,
-  getPostsByCategory,
-} from "../../_data"
+import { getBlogCategories, getBlogPosts } from "@/lib/content"
+
+export const dynamic = "force-dynamic"
 
 interface PageProps {
   params: Promise<{ slug: string }>
 }
 
-export async function generateStaticParams() {
-  return BLOG_CATEGORIES.map((c) => ({ slug: c.slug }))
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const category = getCategory(slug)
+  const category = (await getBlogCategories()).find((c) => c.slug === slug)
   if (!category) return {}
   return {
     title: `${category.label} — Blog`,
@@ -31,10 +24,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogCategoryPage({ params }: PageProps) {
   const { slug } = await params
-  const category = getCategory(slug)
+  const categories = await getBlogCategories()
+  const category = categories.find((c) => c.slug === slug)
   if (!category) notFound()
 
-  const posts = getPostsByCategory(slug)
+  const posts = await getBlogPosts(slug)
+  const getCategoryLabel = (s: string) => categories.find((c) => c.slug === s)?.label ?? s
 
   return (
     <main className="min-h-screen bg-[#0D0D0D] pt-28 pb-16 md:pt-32 md:pb-20">

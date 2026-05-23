@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
-import { BLOG_CATEGORIES, BLOG_POSTS, getCategoryLabel } from "./_data"
+import { getBlogCategories, getBlogPosts } from "@/lib/content"
+
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Blog — Nefes, Bioenerji ve Meditasyon Yazıları",
@@ -15,7 +17,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const [categories, posts] = await Promise.all([getBlogCategories(), getBlogPosts()])
+  const labelOf = (slug: string) => categories.find((c) => c.slug === slug)?.label ?? slug
   return (
     <main className="min-h-screen bg-[#0D0D0D] pt-28 pb-16 md:pt-32 md:pb-20">
       <div className="mx-auto max-w-5xl px-4 md:px-6">
@@ -40,7 +44,7 @@ export default function BlogPage() {
           >
             Tümü
           </Link>
-          {BLOG_CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <Link
               key={c.slug}
               href={`/blog/kategori/${c.slug}`}
@@ -53,7 +57,7 @@ export default function BlogPage() {
 
         {/* Posts */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {BLOG_POSTS.map((post) => (
+          {posts.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
@@ -71,7 +75,7 @@ export default function BlogPage() {
               <div className="p-4 md:p-5">
                 <div className="mb-3 flex items-center gap-2">
                   <span className="rounded-full bg-[#258989]/15 px-2.5 py-0.5 text-[10px] font-medium text-[#258989] md:text-xs">
-                    {getCategoryLabel(post.category)}
+                    {labelOf(post.category)}
                   </span>
                   <span className="text-[10px] text-white/30 md:text-xs">{post.date}</span>
                 </div>
