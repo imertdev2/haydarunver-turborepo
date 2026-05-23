@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx turbo *)",
+      "Bash(npx sharp-cli *)",
+      "Bash(node -e \"require\\('sharp'\\)\")",
+      "Bash(node convert-heic.mjs)",
+      "Bash(pnpm add *)",
+      "WebFetch(domain:www.youtube.com)",
+      "WebFetch(domain:yt.lemnoslife.com)",
+      "WebFetch(domain:www.googleapis.com)",
+      "Bash(git log *)",
+      "Bash(node optimize-images.mjs)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
