@@ -10,31 +10,37 @@ import { cn } from "@workspace/ui/lib/utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://haydarunver.com"
 
+const HOME_TITLE =
+  "Haydar Ünver | Nefes, Aile Dizimi, Bioenerji ve Ses Meditasyonu"
+const HOME_DESC =
+  "Haydar Ünver ile nefes terapisi, aile dizimi, bioenerji, ses meditasyonu ve farkındalık çalışmaları. Antalya'da bireysel seanslar, grup çalışmaları ve online programlar."
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Haydar Ünver — Nefes, Bilinç, Dönüşüm",
-    template: "%s — Haydar Ünver",
+    default: HOME_TITLE,
+    template: "%s | Haydar Ünver",
   },
-  description:
-    "Nefes terapisi, bioenerji, ses meditasyonu ve aile dizimi seansları. Bireysel seans, eğitim ve retreatlerle kendi merkezine dön.",
+  description: HOME_DESC,
   openGraph: {
     type: "website",
     locale: "tr_TR",
     url: SITE_URL,
     siteName: "Haydar Ünver",
-    title: "Haydar Ünver — Nefes, Bilinç, Dönüşüm",
-    description:
-      "Nefes terapisi, bioenerji, ses meditasyonu ve aile dizimi seansları.",
+    title: HOME_TITLE,
+    description: HOME_DESC,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Haydar Ünver — Nefes, Bilinç, Dönüşüm",
-    description:
-      "Nefes terapisi, bioenerji, ses meditasyonu ve aile dizimi seansları.",
+    title: HOME_TITLE,
+    description: HOME_DESC,
   },
   alternates: {
     canonical: "/",
+    languages: {
+      "tr-TR": "/",
+      "ru-RU": "/ru",
+    },
   },
   robots: {
     index: true,

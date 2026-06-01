@@ -5,70 +5,116 @@ import type {
   EventItem,
   Training,
   GalleryImage,
+  Property,
 } from "@/lib/database.types"
 
 // Sunucu tarafı public içerik okuyucuları. Server component'lerden çağrılır.
-// Hata/boş durumda [] döner; çağıran taraf statik fallback'e düşebilir.
+// Env / hata / boş → []. Çağıran taraf statik fallback'e düşebilir.
 
 export async function getBlogCategories(): Promise<BlogCategory[]> {
   const supabase = createServiceClient()
-  const { data } = await supabase
-    .from("blog_categories")
-    .select("*")
-    .order("sort_order", { ascending: true })
-  return data ?? []
+  if (!supabase) return []
+  try {
+    const { data } = await supabase
+      .from("blog_categories")
+      .select("*")
+      .order("sort_order", { ascending: true })
+    return data ?? []
+  } catch {
+    return []
+  }
 }
 
 export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
   const supabase = createServiceClient()
-  let q = supabase
-    .from("blog_posts")
-    .select("*")
-    .eq("is_published", true)
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: false })
-  if (category) q = q.eq("category", category)
-  const { data } = await q
-  return data ?? []
+  if (!supabase) return []
+  try {
+    let q = supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false })
+    if (category) q = q.eq("category", category)
+    const { data } = await q
+    return data ?? []
+  } catch {
+    return []
+  }
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   const supabase = createServiceClient()
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("*")
-    .eq("slug", slug)
-    .eq("is_published", true)
-    .maybeSingle()
-  return data ?? null
+  if (!supabase) return null
+  try {
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .maybeSingle()
+    return data ?? null
+  } catch {
+    return null
+  }
 }
 
 export async function getEvents(): Promise<EventItem[]> {
   const supabase = createServiceClient()
-  const { data } = await supabase
-    .from("events")
-    .select("*")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true })
-  return data ?? []
+  if (!supabase) return []
+  try {
+    const { data } = await supabase
+      .from("events")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+    return data ?? []
+  } catch {
+    return []
+  }
 }
 
 export async function getTrainings(): Promise<Training[]> {
   const supabase = createServiceClient()
-  const { data } = await supabase
-    .from("trainings")
-    .select("*")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true })
-  return data ?? []
+  if (!supabase) return []
+  try {
+    const { data } = await supabase
+      .from("trainings")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+    return data ?? []
+  } catch {
+    return []
+  }
 }
 
 export async function getGalleryImages(): Promise<GalleryImage[]> {
   const supabase = createServiceClient()
-  const { data } = await supabase
-    .from("gallery_images")
-    .select("*")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true })
-  return data ?? []
+  if (!supabase) return []
+  try {
+    const { data } = await supabase
+      .from("gallery_images")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+    return data ?? []
+  } catch {
+    return []
+  }
+}
+
+export async function getProperties(): Promise<Property[]> {
+  const supabase = createServiceClient()
+  if (!supabase) return []
+  try {
+    const { data } = await supabase
+      .from("properties")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+    return data ?? []
+  } catch {
+    return []
+  }
 }

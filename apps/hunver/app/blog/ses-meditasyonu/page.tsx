@@ -2,11 +2,12 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { BlogCta } from "@/components/blog-cta"
 
 export const metadata: Metadata = {
   title: "Ses Meditasyonu: İçsel Sessizliğe Yolculuk | Haydar Ünver",
   description:
-    "Ses meditasyonu ile zihinsel gürültüyü sustur, derin bir iç huzura ulaş. Tibet çanakları, gong ve ses frekanslarının iyileştirici gücünü keşfet.",
+    "Ses meditasyonu ile zihinsel gürültüye alan aç, derin gevşemeyi destekle. Tibet çanakları, gong ve ses frekanslarının dengeleyici etkisini keşfet.",
   keywords: [
     "ses meditasyonu",
     "sound healing",
@@ -74,7 +75,7 @@ export default function SesMeditasyonuPage() {
           </h2>
           <p>
             Ses meditasyonu (Sound Healing), belirli frekanslardaki seslerin ve
-            titreşimlerin iyileştirici etkisini kullanan kadim bir pratiktir.
+            titreşimlerin dengeleyici etkisinden yararlanan kadim bir pratiktir.
             Tibet çanakları, kristal çanaklar, gong, tuning fork ve insan sesi
             gibi araçlarla yapılır. Bu sesler, beyin dalgalarını yavaşlatarak
             derin meditasyon durumlarına (theta ve delta dalgaları) geçişi
@@ -83,12 +84,12 @@ export default function SesMeditasyonuPage() {
           <p>
             Ses terapisinin kökenleri binlerce yıl öncesine, Antik Mısır, Hint
             ve Tibet geleneklerine uzanır. Bu kültürler, sesin sadece duyulabilir
-            bir fenomen olmadığını, aynı zamanda hücresel düzeyde iyileştirici
-            bir güç olduğunu biliyorlardı.
+            bir fenomen olmadığını, aynı zamanda bedendeki dengeyi
+            destekleyebileceğini fark etmişlerdi.
           </p>
 
           <h2 className="pt-2 text-xl font-bold text-white md:text-2xl">
-            Ses Nasıl İyileştirir?
+            Ses Nasıl Etki Eder?
           </h2>
           <p>
             İnsan bedeninin yüzde 70&apos;i sudur ve su, sesi mükemmel bir
@@ -191,28 +192,8 @@ export default function SesMeditasyonuPage() {
             saklıdır.
           </p>
 
-          {/* CTA */}
-          <div className="mt-4 rounded-xl border border-[#258989]/20 bg-[#258989]/[0.06] p-6 text-center md:p-8">
-            <p className="mb-3 text-base font-semibold text-white md:text-lg">
-              Sesin iyileştirici gücünü deneyimle
-            </p>
-            <p className="mb-5 text-sm text-white/50">
-              Bireysel veya grup ses meditasyonu seansları için iletişime geç.
-            </p>
-            <a
-              href="https://wa.me/908503031559?text=Merhaba%2C%20ses%20meditasyonu%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-[#C8A96A]/30 bg-[#C8A96A] px-6 py-2.5 text-sm font-semibold text-[#0D0D0D] transition-all hover:bg-[#d4b87a] hover:shadow-lg hover:shadow-[#C8A96A]/20"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="size-4">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 0 1-4.243-1.214l-.252-.149-2.868.852.852-2.868-.149-.252A8 8 0 1 1 12 20z"/>
-              </svg>
-              WhatsApp ile Ulaş
-            </a>
-          </div>
         </div>
+        <BlogCta topic="Ses Meditasyonu" />
       </article>
     </main>
   )

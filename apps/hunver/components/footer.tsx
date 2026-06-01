@@ -2,12 +2,14 @@ import Link from "next/link"
 
 const navLinks = [
   { label: "Hakkımda", href: "/hakkimda" },
-  { label: "Hizmetler", href: "/hizmetler" },
+  { label: "Seanslar", href: "/hizmetler" },
   { label: "Eğitimler", href: "/egitimler" },
   { label: "Etkinlikler", href: "/etkinlikler" },
   { label: "Blog", href: "/blog" },
   { label: "Galeri", href: "/galeri" },
+  { label: "Emlak", href: "/emlak" },
   { label: "Randevu", href: "/randevu" },
+  { label: "İletişim", href: "/iletisim" },
 ]
 
 // Gerçek hesaplar .env.local'de tanımlanır:

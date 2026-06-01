@@ -4,12 +4,18 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect, useCallback } from "react"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
 
 interface HeroImage {
   src: string
   alt: string
+}
+
+export interface HeroCta {
+  text: string
+  href: string
+  variant?: "primary" | "secondary" | "whatsapp"
+  external?: boolean
 }
 
 export interface HeroSlide {
@@ -18,6 +24,7 @@ export interface HeroSlide {
   description: string
   ctaText: string
   ctaHref: string
+  ctas?: HeroCta[]
   personImage?: HeroImage
   backgroundImage?: HeroImage
 }
@@ -79,11 +86,23 @@ function ImagePlaceholder({ className, label }: { className?: string; label: str
 
 const defaultSlides: HeroSlide[] = [
   {
-    subtitle: "Zihnini Sıfırla",
-    title: "Sistemini Yeniden Başlat",
-    description: "Sinir sistemini regüle eden, zihinsel gürültüyü susturan ve seni merkezine getiren derin bir dönüşüm deneyimi.",
-    ctaText: "Hemen Başla",
-    ctaHref: "/basvuru",
+    subtitle: "Bütünsel Çalışmalar",
+    title: "Nefes, Enerji ve Farkındalıkla Kendine Dön",
+    description:
+      "Bireysel seanslar, grup çalışmaları, aile dizimi, ses meditasyonu ve nefes pratikleriyle beden, zihin ve ruh dengenizi destekleyen bütünsel çalışmalar.",
+    ctaText: "Bireysel Seans Al",
+    ctaHref: "/randevu",
+    ctas: [
+      { text: "Bireysel Seans Al", href: "/randevu", variant: "primary" },
+      { text: "Etkinlikleri İncele", href: "/etkinlikler", variant: "secondary" },
+      {
+        text: "WhatsApp'tan Yaz",
+        href: "https://wa.me/908503031559?text=" +
+          encodeURIComponent("Merhaba, bilgi almak istiyorum."),
+        variant: "whatsapp",
+        external: true,
+      },
+    ],
     personImage: { src: "/images/hunver-man.png", alt: "Haydar Ünver" },
     backgroundImage: { src: "/images/slider-1.png", alt: "Slider arka plan" },
   },
@@ -104,6 +123,48 @@ const defaultSlides: HeroSlide[] = [
     backgroundImage: { src: "/images/slider-3.png", alt: "Meditasyon ve gün batımı" },
   },
 ]
+
+/* ─── CTA Renderer (tek veya çoklu buton) ─── */
+function HeroCtas({ slide, index }: { slide: HeroSlide; index: number }) {
+  const ctas: HeroCta[] =
+    slide.ctas && slide.ctas.length > 0
+      ? slide.ctas
+      : [{ text: slide.ctaText, href: slide.ctaHref, variant: "primary" }]
+
+  const styles: Record<NonNullable<HeroCta["variant"]>, string> = {
+    primary:
+      "border border-[#C8A96A]/30 bg-[#C8A96A] text-[#0D0D0D] hover:bg-[#d4b87a] hover:shadow-lg hover:shadow-[#C8A96A]/20",
+    secondary:
+      "border border-white/20 bg-white/[0.04] text-white hover:bg-white/10",
+    whatsapp: "bg-[#25D366] text-white hover:bg-[#20bd5a]",
+  }
+
+  return (
+    <div
+      key={`cta-${index}`}
+      className="flex flex-wrap gap-2.5 animate-in fade-in slide-in-from-bottom-6 duration-500 delay-300"
+    >
+      {ctas.map((c, i) => {
+        const variant = c.variant ?? "primary"
+        const className = `group inline-flex h-10 items-center gap-2 rounded-lg px-5 text-sm font-semibold transition-all md:h-11 md:px-6 ${styles[variant]}`
+        if (c.external) {
+          return (
+            <a key={i} href={c.href} target="_blank" rel="noopener noreferrer" className={className}>
+              {c.text}
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+            </a>
+          )
+        }
+        return (
+          <Link key={i} href={c.href} className={className}>
+            {c.text}
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        )
+      })}
+    </div>
+  )
+}
 
 /* ─── Slide Layout: Person (text left + person right) ─── */
 function PersonSlide({ slide, index }: { slide: HeroSlide; index: number }) {
@@ -157,17 +218,7 @@ function PersonSlide({ slide, index }: { slide: HeroSlide; index: number }) {
             >
               {slide.description}
             </p>
-            <div key={`cta-${index}`} className="animate-in fade-in slide-in-from-bottom-6 duration-500 delay-300">
-              <Button
-                asChild
-                className="group h-10 gap-2 rounded-lg border border-[#C8A96A]/30 bg-[#C8A96A] px-5 text-sm font-semibold text-[#0D0D0D] transition-all hover:bg-[#d4b87a] hover:shadow-lg hover:shadow-[#C8A96A]/20 md:h-11 md:px-6"
-              >
-                <Link href={slide.ctaHref}>
-                  {slide.ctaText}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              </Button>
-            </div>
+            <HeroCtas slide={slide} index={index} />
           </div>
 
           <div
@@ -230,26 +281,22 @@ function BackgroundSlide({ slide, index }: { slide: HeroSlide; index: number }) 
           >
             {slide.description}
           </p>
-          <div key={`cta-${index}`} className="animate-in fade-in slide-in-from-bottom-6 duration-500 delay-300">
-            <Button
-              asChild
-              className="group h-10 gap-2 rounded-lg border border-[#C8A96A]/30 bg-[#C8A96A] px-5 text-sm font-semibold text-[#0D0D0D] transition-all hover:bg-[#d4b87a] hover:shadow-lg hover:shadow-[#C8A96A]/20 md:h-11 md:px-6"
-            >
-              <Link href={slide.ctaHref}>
-                {slide.ctaText}
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            </Button>
-          </div>
+          <HeroCtas slide={slide} index={index} />
         </div>
       </div>
     </>
   )
 }
 
+const defaultGalleryImages: [HeroImage, HeroImage, HeroImage] = [
+  { src: "/images/nefes-terapisi.png", alt: "Nefes terapisi seansı" },
+  { src: "/images/ses-meditasyonu.png", alt: "Ses meditasyonu" },
+  { src: "/images/bio-enerji.png", alt: "Bioenerji çalışması" },
+]
+
 export function HeroSection({
   slides = defaultSlides,
-  galleryImages,
+  galleryImages = defaultGalleryImages,
   autoPlayInterval = 6000,
 }: HeroSectionProps) {
   const [current, setCurrent] = useState(0)

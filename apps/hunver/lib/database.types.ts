@@ -109,6 +109,12 @@ export interface Database {
           title: string
           image_src: string
           image_alt: string
+          date_label: string
+          location: string
+          event_type: string
+          status: EventStatus
+          description: string
+          capacity: string
           is_featured: boolean
           is_active: boolean
           sort_order: number
@@ -171,6 +177,25 @@ export interface Database {
         >
         Update: Partial<Database["public"]["Tables"]["businesses"]["Insert"]>
       }
+      properties: {
+        Row: {
+          id: string
+          title: string
+          category: string
+          location: string
+          size: string
+          price: string
+          status: string
+          description: string
+          features: string[]
+          photos: string[]
+          is_active: boolean
+          sort_order: number
+          created_at: string
+        }
+        Insert: Omit<Database["public"]["Tables"]["properties"]["Row"], "id" | "created_at">
+        Update: Partial<Database["public"]["Tables"]["properties"]["Insert"]>
+      }
     }
   }
 }
@@ -183,9 +208,11 @@ export type SiteSetting = Database["public"]["Tables"]["site_settings"]["Row"]
 export type BlockedDate = Database["public"]["Tables"]["blocked_dates"]["Row"]
 export type BlogCategory = Database["public"]["Tables"]["blog_categories"]["Row"]
 export type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"]
+export type EventStatus = "upcoming" | "past"
 export type EventItem = Database["public"]["Tables"]["events"]["Row"]
 export type Training = Database["public"]["Tables"]["trainings"]["Row"]
 export type GalleryImage = Database["public"]["Tables"]["gallery_images"]["Row"]
+export type Property = Database["public"]["Tables"]["properties"]["Row"]
 
 // İşletme rehberi sabit listeleri
 export type BusinessCategory =

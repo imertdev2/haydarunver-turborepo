@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { createServiceClient } from "@/lib/supabase-server"
+import { requireServiceClient as createServiceClient } from "@/lib/supabase-server"
 import { checkAuth, unauthorized } from "@/lib/admin-auth-server"
 
 // Galeri görselleri (gallery_images) yönetimi.

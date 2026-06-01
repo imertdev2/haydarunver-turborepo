@@ -14,9 +14,9 @@ export function AboutSection({
   subtitle = "Hoş geldin",
   title = "Ben Haydar Ünver",
   paragraphs = [
-    "Yıllar boyu bedeni ve zihni birlikte çalıştıran yolları araştırdım; nefesin ne kadar sade ve ne kadar dönüştürücü olabildiğini deneyimledim.",
-    "Bugün; nefes terapisi, bioenerji, ses meditasyonu ve aile dizimi gibi alanlarda bireysel seanslar, eğitimler ve retreatler yürütüyorum.",
-    "Buradaki niyetim tek: insanın kendi merkezine geri dönüşünü hatırlatan sade, güvenli ve derin bir alan açmak.",
+    "Ben Haydar Ünver. Nefes, aile dizimi, bioenerji, ses meditasyonu ve su terapisi alanlarında bireysel ve grup çalışmaları düzenliyorum.",
+    "Çalışmalarımda bedenin, zihnin ve duyguların birlikte dengelenmesine alan açıyorum.",
+    "Amacım; kişinin kendi merkezine dönmesine, içsel sessizliğini duymasına ve yaşamla daha sağlıklı bir bağ kurmasına rehberlik etmek.",
   ],
   ctaText = "WhatsApp ile Ulaş",
   ctaHref = "https://wa.me/908503031559?text=Merhaba%2C%20bilgi%20almak%20istiyorum.",

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { createServiceClient } from "@/lib/supabase-server"
+import { requireServiceClient as createServiceClient } from "@/lib/supabase-server"
 import { sendCustomerStatusEmail } from "@/lib/email"
 import { buildIcs } from "@/lib/ics"
 

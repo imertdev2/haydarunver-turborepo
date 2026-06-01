@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { createServiceClient } from "@/lib/supabase-server"
+import { requireServiceClient as createServiceClient } from "@/lib/supabase-server"
 
 // GET — aktif işletmeleri getir (kategori + bölge + arama filtreli)
 export async function GET(request: Request) {

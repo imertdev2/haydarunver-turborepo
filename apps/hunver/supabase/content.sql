@@ -36,11 +36,25 @@ create table if not exists events (
   title text not null,
   image_src text not null default '',
   image_alt text not null default '',
+  date_label text not null default '',
+  location text not null default '',
+  event_type text not null default '',
+  status text not null default 'upcoming' check (status in ('upcoming', 'past')),
+  description text not null default '',
+  capacity text not null default '',
   is_featured boolean not null default false,
   is_active boolean not null default true,
   sort_order int not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- Mevcut events tablosuna kolon ekleme (idempotent)
+alter table events add column if not exists date_label text not null default '';
+alter table events add column if not exists location text not null default '';
+alter table events add column if not exists event_type text not null default '';
+alter table events add column if not exists status text not null default 'upcoming';
+alter table events add column if not exists description text not null default '';
+alter table events add column if not exists capacity text not null default '';
 
 -- 4. Eğitimler
 create table if not exists trainings (
@@ -64,10 +78,28 @@ create table if not exists gallery_images (
   created_at timestamptz not null default now()
 );
 
+-- 6. Emlak / Yatırım ilanları
+create table if not exists properties (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  category text not null default '',          -- Arsa, Otel, Bungalov Tesis, Villa
+  location text not null default '',
+  size text not null default '',              -- '1.500 m²', '12 oda', '4+1'
+  price text not null default 'Fiyat için iletişime geçiniz',
+  status text not null default 'Satılık',     -- Satılık, Devren, Kiralık
+  description text not null default '',
+  features text[] not null default '{}',
+  photos text[] not null default '{}',
+  is_active boolean not null default true,
+  sort_order int not null default 0,
+  created_at timestamptz not null default now()
+);
+
 -- Indexler
 create index if not exists idx_blog_posts_category on blog_posts(category);
 create index if not exists idx_blog_posts_published on blog_posts(is_published);
 create index if not exists idx_gallery_category on gallery_images(category);
+create index if not exists idx_properties_active on properties(is_active);
 
 -- RLS — herkes yayınlanmış/aktif içeriği okuyabilir; yazma yalnızca service_role
 alter table blog_categories enable row level security;
@@ -75,12 +107,14 @@ alter table blog_posts enable row level security;
 alter table events enable row level security;
 alter table trainings enable row level security;
 alter table gallery_images enable row level security;
+alter table properties enable row level security;
 
 create policy "Herkes blog kategorilerini gorebilir" on blog_categories for select using (true);
 create policy "Herkes yayinlanmis yazilari gorebilir" on blog_posts for select using (is_published = true);
 create policy "Herkes aktif etkinlikleri gorebilir" on events for select using (is_active = true);
 create policy "Herkes aktif egitimleri gorebilir" on trainings for select using (is_active = true);
 create policy "Herkes aktif galeriyi gorebilir" on gallery_images for select using (is_active = true);
+create policy "Herkes aktif emlak ilanlarini gorebilir" on properties for select using (is_active = true);
 
 -- =============================================
 -- Seed — mevcut statik içerik
@@ -106,11 +140,17 @@ insert into blog_posts (slug, title, excerpt, category, date, image, sort_order)
    'meditasyon', '3 Nisan 2026', '/images/ses-meditasyonu.png', 3)
 on conflict (slug) do nothing;
 
-insert into events (title, image_src, image_alt, is_featured, sort_order) values
-  ('Kokopellis Festivali', '/images/kokopellis.png', 'Kokopellis Festivali', true, 0),
-  ('Masal Festivali', '/images/masal-festivali.png', 'Masal Festivali', false, 1),
-  ('Namaste Festivali', '/images/namaste-festivali.png', 'Namaste Festivali', false, 2),
-  ('Be Your Retreat', '/images/beyouretreat.png', 'Be Your Retreat', false, 3)
+insert into events (title, image_src, image_alt, date_label, location, event_type, status, description, is_featured, sort_order) values
+  ('Kokopellis Festivali', '/images/kokopellis.png', 'Kokopellis Festivali', '', '', 'Festival', 'past', '', true, 0),
+  ('Masal Festivali', '/images/masal-festivali.png', 'Masal Festivali', '', '', 'Festival', 'past', '', false, 1),
+  ('Namaste Festivali', '/images/namaste-festivali.png', 'Namaste Festivali', '', '', 'Festival', 'past', '', false, 2),
+  ('Be Your Retreat', '/images/beyouretreat.png', 'Be Your Retreat', '', '', 'Retreat', 'past', '', false, 3)
+on conflict do nothing;
+
+insert into events (title, date_label, location, event_type, status, description, is_featured, sort_order) values
+  ('Yogarama Yoga Festivali', '18 - 22 Ekim 2023', 'Grand Aygün Hotel, Çıralı', 'Yoga, Mindfulness, Qigong, Müzik', 'past', 'Yoga, mindfulness, qigong, hang drum, satsang ve Yanartaş gezisi gibi içeriklerle düzenlenmiş kapsamlı bir yoga festivali.', false, 4),
+  ('Harmoniac Festival – Çıralı Edition', '24 - 26 Nisan 2026', 'Çıralı, Antalya', 'Müzik, Yoga, Sound Healing, Breathwork', 'past', 'Yoga, nefes, ses şifası, müzik, aquatic bodywork ve Yanartaş atmosferiyle düzenlenen çok disiplinli wellness festivali.', false, 5),
+  ('Çıralı Nature Fest', '12 Nisan 2025', 'Yanartaş - Çıralı Sahili', 'Doğa Yürüyüşü, Outdoor Etkinlik', 'past', 'Yanartaş''tan Çıralı sahiline uzanan doğa yürüyüşüyle turizm sezonunu açan bölgesel doğa etkinliği.', false, 6)
 on conflict do nothing;
 
 insert into trainings (title, image_src, image_alt, sort_order) values
@@ -152,4 +192,11 @@ insert into gallery_images (src, alt, category, sort_order) values
   ('/images/galleries/5f147e22-4324-48d3-b814-6ce100c68745.jpg', 'Mağara tapınağında namaste', 'Doğa', 29),
   ('/images/galleries/c5177a0b-77a5-46b6-94b3-c2d43a16b94b.jpg', 'Dağ tapınağında buluşma', 'Doğa', 30),
   ('/images/galleries/d6e428cd-1c7f-450d-b5d4-91c13468209d.jpg', 'Nepal stupa ile selfie', 'Doğa', 31)
+on conflict do nothing;
+
+insert into properties (title, category, location, size, price, status, description, features, sort_order) values
+  ('Çıralı''da Doğa İçinde Yatırımlık Arsa', 'Arsa', 'Çıralı, Kemer / Antalya', '1.500 m²', 'Fiyat için iletişime geçiniz', 'Satılık', 'Çıralı''nın doğal dokusuna yakın, butik konaklama veya özel yaşam projesi için değerlendirilebilecek arsa fırsatı.', array['Doğa içinde konum','Yatırım potansiyeli','Sessiz bölge','Turizm hattına yakın'], 0),
+  ('Olympos Yakınında Butik Otel Fırsatı', 'Otel', 'Olympos / Antalya', '12 oda', 'Fiyat için iletişime geçiniz', 'Satılık', 'Olympos ve Çıralı hattında, yaz sezonunda aktif çalışabilecek butik otel yatırım fırsatı.', array['Hazır işletme altyapısı','Turistik lokasyon','Sezonluk gelir potansiyeli','Butik konsept'], 1),
+  ('Kemer Bölgesinde Bungalov Tesis', 'Bungalov Tesis', 'Kemer / Antalya', '8 bungalov', 'Fiyat için iletişime geçiniz', 'Devren', 'Yoga kampı, retreat, doğa tatili ve wellness etkinlikleri için uygun bungalov tesis fırsatı.', array['Hazır konsept','Doğa turizmine uygun','Kamp ve retreat potansiyeli','İşletme devri'], 2),
+  ('Denize Yakın Havuzlu Villa', 'Villa', 'Çıralı / Antalya', '4+1', 'Fiyat için iletişime geçiniz', 'Satılık', 'Aile yaşamı, sezonluk kiralama veya yatırım amaçlı değerlendirilebilecek özel villa portföyü.', array['Havuzlu','Bahçeli','Denize yakın','Kiralama potansiyeli'], 3)
 on conflict do nothing;

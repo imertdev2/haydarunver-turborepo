@@ -26,9 +26,12 @@ import {
 import { Separator } from "@workspace/ui/components/separator"
 
 const navLinks = [
+  { label: "Ana Sayfa", href: "/" },
   { label: "Hakkımda", href: "/hakkimda" },
-  { label: "Hizmetler", href: "/hizmetler" },
+  { label: "Seanslar", href: "/hizmetler" },
   { label: "Etkinlikler", href: "/etkinlikler" },
+  { label: "Galeri", href: "/galeri" },
+  { label: "İletişim", href: "/iletisim" },
 ]
 
 const blogLinks = [
@@ -42,7 +45,6 @@ const blogLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [locale, setLocale] = useState<"TR" | "RU">("RU")
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 w-full">
@@ -95,14 +97,14 @@ export function Navbar() {
 
           <Separator orientation="vertical" className="mx-1 h-5 bg-[#C8A96A]/20" />
 
-          {/* Language Toggle */}
+          {/* Language Toggle → RU sayfası */}
           <Button
+            asChild
             variant="ghost"
             size="sm"
             className="text-xs font-medium tracking-wider text-white/70 hover:bg-white/10 hover:text-[#C8A96A]"
-            onClick={() => setLocale(locale === "TR" ? "RU" : "TR")}
           >
-            {locale}
+            <Link href="/ru">RU</Link>
           </Button>
 
           {/* Search */}
@@ -160,12 +162,13 @@ export function Navbar() {
 
                 <Separator className="my-2 bg-[#C8A96A]/10" />
 
-                <button
-                  onClick={() => setLocale(locale === "TR" ? "RU" : "TR")}
+                <Link
+                  href="/ru"
+                  onClick={() => setMobileOpen(false)}
                   className="rounded-md px-3 py-2.5 text-left text-sm font-medium text-white/80 transition-colors hover:bg-white/5 hover:text-[#C8A96A]"
                 >
-                  {locale === "RU" ? "Русский" : "Türkçe"}
-                </button>
+                  Русский
+                </Link>
               </nav>
             </SheetContent>
           </Sheet>
