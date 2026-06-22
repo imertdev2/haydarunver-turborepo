@@ -137,7 +137,13 @@ insert into blog_posts (slug, title, excerpt, category, date, image, sort_order)
    'bioenerji', '8 Nisan 2026', '/images/bio-enerji.png', 2),
   ('ses-meditasyonu', 'Ses Meditasyonu: İçsel Sessizliğe Yolculuk',
    'Kadim çanakların ve sesin titreşimiyle zihinsel gürültüyü sustur, derinlere in.',
-   'meditasyon', '3 Nisan 2026', '/images/ses-meditasyonu.png', 3)
+   'meditasyon', '3 Nisan 2026', '/images/ses-meditasyonu.png', 3),
+  ('aile-dizimi', 'Aile Dizimi Nedir? Sistemik Bakışın Görünmez Bağları',
+   'Aile sisteminde nesilden nesle taşınan görünmez sadakatleri ve aile dizimi çalışmasının ardındaki bilgeliği keşfet.',
+   'aile-dizimi', '15 Mayıs 2026', '/images/aile-dizilimi.png', 4),
+  ('farkindalik-pratikleri', 'Günlük Hayata Taşıyabileceğin 5 Farkındalık Pratiği',
+   'Sabah açılışından gün sonu kapanışına kadar günlük rutinine ekleyebileceğin sade ama dönüştürücü beş pratik.',
+   'yasam', '22 Mayıs 2026', '/images/hakkimda.png', 5)
 on conflict (slug) do nothing;
 
 insert into events (title, image_src, image_alt, date_label, location, event_type, status, description, is_featured, sort_order) values

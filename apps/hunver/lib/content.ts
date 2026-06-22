@@ -1,4 +1,8 @@
 import { createServiceClient } from "@/lib/supabase-server"
+import {
+  BLOG_CATEGORIES_FALLBACK,
+  BLOG_POSTS_FALLBACK,
+} from "@/lib/blog-fallback"
 import type {
   BlogPost,
   BlogCategory,
@@ -13,21 +17,25 @@ import type {
 
 export async function getBlogCategories(): Promise<BlogCategory[]> {
   const supabase = createServiceClient()
-  if (!supabase) return []
+  if (!supabase) return BLOG_CATEGORIES_FALLBACK
   try {
     const { data } = await supabase
       .from("blog_categories")
       .select("*")
       .order("sort_order", { ascending: true })
-    return data ?? []
+    if (!data || data.length === 0) return BLOG_CATEGORIES_FALLBACK
+    return data
   } catch {
-    return []
+    return BLOG_CATEGORIES_FALLBACK
   }
 }
 
 export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
+  const filterByCategory = (posts: BlogPost[]) =>
+    category ? posts.filter((p) => p.category === category) : posts
+
   const supabase = createServiceClient()
-  if (!supabase) return []
+  if (!supabase) return filterByCategory(BLOG_POSTS_FALLBACK)
   try {
     let q = supabase
       .from("blog_posts")
@@ -37,9 +45,10 @@ export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
       .order("created_at", { ascending: false })
     if (category) q = q.eq("category", category)
     const { data } = await q
-    return data ?? []
+    if (!data || data.length === 0) return filterByCategory(BLOG_POSTS_FALLBACK)
+    return data
   } catch {
-    return []
+    return filterByCategory(BLOG_POSTS_FALLBACK)
   }
 }
 

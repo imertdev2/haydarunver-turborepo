@@ -78,6 +78,16 @@ export function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
 
+          {/* Hindistan Turu → harici site */}
+          <a
+            href="https://hindistan.haydarunver.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-9 items-center px-3 text-sm font-medium text-[#C8A96A] transition-colors hover:text-white"
+          >
+            Hindistan Turu
+          </a>
+
           {/* Blog Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -143,6 +153,18 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
+
+                <Separator className="my-2 bg-[#C8A96A]/10" />
+
+                <a
+                  href="https://hindistan.haydarunver.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-md px-3 py-2.5 text-sm font-medium text-[#C8A96A] transition-colors hover:bg-white/5 hover:text-white"
+                >
+                  Hindistan Turu
+                </a>
 
                 <Separator className="my-2 bg-[#C8A96A]/10" />
 
